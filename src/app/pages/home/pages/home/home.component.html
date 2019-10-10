@@ -1,166 +1,296 @@
-<div style="margin-top: 70px">
-  <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h1 style="font-size: 60px; text-align: center">Welcome to HISP TANZANIA SEED APP</h1>
-
-        <h2>UI Components</h2>
-
-        <h2>Button</h2>
-        <hr>
-        <h3>Stroked Buttons</h3>
-        <div class="example-button-row">
-          <button mat-stroked-button>Basic</button>
-          <button mat-stroked-button color="primary">Primary</button>
-          <button mat-stroked-button color="accent">Accent</button>
-          <button mat-stroked-button color="warn">Warn</button>
-          <button mat-stroked-button disabled>Disabled</button>
-          <a mat-stroked-button routerLink=".">Link</a>
+<div class="row">
+  <div class="col-md-3">
+    <ul class="list-group" *ngIf="resourcesList$ | async">
+      <li
+        class="list-group-item"
+        routerLinkActive="active-department"
+        routerLink="/{{ documentGroupId }}/{{ procedure.id }}"
+        *ngFor="let procedure of resourcesList$ | async"
+      >
+        {{ procedure.name }}
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-9">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">
+          <div *ngIf="loadingFiles">
+            <app-dashboard-progress
+              [height]="'40px'"
+              [borderRadius]="'5px'"
+            ></app-dashboard-progress>
+          </div>
+          <div *ngIf="!loadingFiles">
+            <ng-container *ngIf="hasPriviledge">
+              <div
+                class="custom-button"
+                data-toggle="modal"
+                data-target="#exampleModalCenter"
+                (click)="setModal('open')"
+              >
+                Upload Shared Resource <span>(eg. documents )</span>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!hasPriviledge">
+              <div class="custom-button-disabled">
+                Shared Resource <span>(eg. documents )</span>
+              </div>
+            </ng-container>
+          </div>
         </div>
+        <div>
+          <div class="custom-table-container">
+            <div class="row">
+              <div class="col-lg-8 col-md-8 col-xs-8"></div>
+              <div class="col-lg-4 col-md-4 col-xs-4">
+                <app-dashboard-progress
+                  *ngIf="loadingFiles"
+                  [height]="'40px'"
+                  [borderRadius]="'5px'"
+                >
+                </app-dashboard-progress>
+                <div class="input-group mb-3 float-right" *ngIf="!loadingFiles">
+                  <input
+                    type="text"
+                    class="form-control"
+                    [(ngModel)]="searchParameter"
+                    (ngModelChange)="searchingItem($event)"
+                    placeholder="Search resource name"
+                    aria-label="Search Resource"
+                    aria-describedby="basic-addon2"
+                  />
+                  <div class="input-group-append">
+                    <span class="input-group-text"
+                      ><img
+                        src="assets/images/search-icon.png"
+                        style="height: 20px"
+                    /></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div *ngIf="loadingFiles">
+                  <br />
+                  <app-dashboard-progress
+                    [height]="'400px'"
+                    [borderRadius]="'5px'"
+                  ></app-dashboard-progress>
+                </div>
+                <table
+                  *ngIf="
+                    !loadingFiles &&
+                    (pages.length != 0 &&
+                      pages[pageEvent.pageIndex].length != 0)
+                  "
+                >
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Resource Name</th>
+                      <th>Resource Type</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="
+                        let pageItem of pages[pageEvent.pageIndex];
+                        let counter = index
+                      "
+                    >
+                      <th>{{ counter + 1 }}</th>
+                      <td>{{ pageItem.name }}</td>
+                      <td>
+                        <span *ngIf="pageItem.external"
+                          >External Resource Link</span
+                        >
+                        <span *ngIf="!pageItem.external">File Resource</span>
+                      </td>
+                      <td>
+                        <span
+                          class="action-button"
+                          (click)="openResource(pageItem)"
+                          *ngIf="pageItem.external"
+                        >
+                          <img
+                            style="height: 20px;"
+                            src="assets/images/link-icon.png"
+                          />
+                        </span>
+                        <span
+                          class="action-button"
+                          (click)="openResource(pageItem)"
+                          *ngIf="!pageItem.external"
+                        >
+                          <img
+                            style="height: 20px;"
+                            src="assets/images/download-icon.png"
+                          />
+                        </span>
+                        <span
+                          class="action-button"
+                          *ngIf="hasPriviledge"
+                          (click)="deleteDocument(pageItem)"
+                        >
+                          <img
+                            style="height: 20px;"
+                            src="assets/images/trash-icon.png"
+                          />
+                        </span>
+                      </td>
+                    </tr>
+                    <tr
+                      *ngIf="
+                        !loadingFiles &&
+                        (pages.length == 0 ||
+                          pages[pageEvent.pageIndex].length == 0)
+                      "
+                    >
+                      <td colspan="4" style="color:#cccccc; text-align: center">
+                        No resource found
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <br />
+            <div class="row">
+              <div class="col-md-8"></div>
+              <div class="col-md-4">
+                <div *ngIf="loadingFiles">
+                  <app-dashboard-progress
+                    [height]="'40px'"
+                    [borderRadius]="'5px'"
+                  ></app-dashboard-progress>
+                </div>
+                <nav class="float-right" *ngIf="!loadingFiles">
+                  <ul class="pagination">
+                    <ng-container *ngIf="pageEvent.pageIndex <= 0">
+                      <li class="page-item disabled">
+                        <a class="page-link" href="#">Previous</a>
+                      </li>
+                    </ng-container>
 
-        <h3 class="mt-4">Flat Buttons</h3>
-        <div class="example-button-row">
-          <button mat-flat-button>Basic</button>
-          <button mat-flat-button color="primary">Primary</button>
-          <button mat-flat-button color="accent">Accent</button>
-          <button mat-flat-button color="warn">Warn</button>
-          <button mat-flat-button disabled>Disabled</button>
-          <a mat-flat-button routerLink=".">Link</a>
+                    <ng-container *ngIf="pageEvent.pageIndex > 0">
+                      <li class="page-item">
+                        <a
+                          class="page-link"
+                          (click)="
+                            pageEvent.pageIndex = pageEvent.pageIndex - 1
+                          "
+                          style="cursor: pointer;color: dodgerblue;"
+                          >Previous</a
+                        >
+                      </li>
+                    </ng-container>
+
+                    <ng-container
+                      *ngFor="let page of pages; let pageCounter = index"
+                    >
+                      <ng-container *ngIf="pageCounter + 1 < 4">
+                        <li class="page-item">
+                          <a
+                            class="page-link"
+                            [ngClass]="{
+                              'current-page': pageEvent.pageIndex == pageCounter
+                            }"
+                            style="cursor: pointer; color:dodgerblue;"
+                            (click)="pageEvent.pageIndex = pageCounter"
+                            >{{ pageCounter + 1 }}</a
+                          >
+                        </li>
+                      </ng-container>
+                      <ng-container
+                        *ngIf="
+                          pageEvent.pageIndex != pageCounter &&
+                          pageCounter + 1 > 3 &&
+                          pageCounter + 1 < pages.length - 3
+                        "
+                      >
+                        <li class="page-item"><a class="page-link">...</a></li>
+                      </ng-container>
+                      <ng-container *ngIf="pageCounter + 1 > pages.length - 3">
+                        <li class="page-item">
+                          <a
+                            class="page-link"
+                            [ngClass]="{
+                              'current-page': pageEvent.pageIndex == pageCounter
+                            }"
+                            style="cursor: pointer; color:dodgerblue;"
+                            (click)="pageEvent.pageIndex = pageCounter"
+                            >{{ pageCounter + 1 }}</a
+                          >
+                        </li>
+                      </ng-container>
+                    </ng-container>
+
+                    <ng-container
+                      *ngIf="pageEvent.pageIndex == pages.length - 1"
+                    >
+                      <li class="page-item disabled">
+                        <a class="page-link">Next</a>
+                      </li>
+                    </ng-container>
+
+                    <ng-container
+                      *ngIf="pageEvent.pageIndex < pages.length - 1"
+                    >
+                      <li class="page-item">
+                        <a
+                          class="page-link"
+                          (click)="
+                            pageEvent.pageIndex = pageEvent.pageIndex + 1
+                          "
+                          style="cursor: pointer;color: dodgerblue;"
+                          >Next</a
+                        >
+                      </li>
+                    </ng-container>
+                  </ul>
+                </nav>
+              </div>
+            </div>
+            <div
+              class="row"
+              *ngIf="
+                !loadingFiles &&
+                (pages.length == 0 || pages[pageEvent.pageIndex].length == 0)
+              "
+            >
+              <div class="col-md-12" style="text-align: center">
+                No resource found
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="mt-5"></div>
-        <h2>Card</h2>
-        <hr>
-        <mat-card class="example-card">
-          <mat-card-header>
-            <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <p>
-              The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-              A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-              bred for hunting.
-            </p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button>LIKE</button>
-            <button mat-button>SHARE</button>
-          </mat-card-actions>
-        </mat-card>
-
-        <div class="mt-5"></div>
-        <h2>Chips</h2>
-        <hr>
-        <mat-chip-list aria-label="Fish selection">
-          <mat-chip>One fish</mat-chip>
-          <mat-chip>Two fish</mat-chip>
-          <mat-chip color="primary" selected>Primary fish</mat-chip>
-          <mat-chip color="accent" selected>Accent fish</mat-chip>
-        </mat-chip-list>
-
-        <div class="mt-5"></div>
-        <h2>Tabs</h2>
-        <hr>
-        <mat-tab-group>
-          <mat-tab label="First"> Content 1 </mat-tab>
-          <mat-tab label="Second"> Content 2 </mat-tab>
-          <mat-tab label="Third"> Content 3 </mat-tab>
-        </mat-tab-group>
-
-        <div class="mt-5"></div>
-        <h2>Snackbar</h2>
-        <hr>
-        <button mat-button (click)="openSnackBar()">Show snack-bar</button>
-
-        <div class="mt-5"></div>
-        <h2>Tooltip</h2>
-        <hr>
-        <button mat-raised-button #tooltip="matTooltip" matTooltip="Info about the action"
-          [matTooltipPosition]="'below'" matTooltipHideDelay="100000"
-          aria-label="Button that displays a tooltip that hides when scrolled out of the container"
-          class="example-button">
-          Action
-        </button>
-
-        <div class="mt-5"></div>
-        <h2>Paginator</h2>
-        <hr>
-        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5,10,25,100]" (page)="pageEvent = $event">
-        </mat-paginator>
-
-        <div class="mt-5"></div>
-        <h2>Table</h2>
-        <hr>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
-
-          <!--- Note that these columns can be defined in any order.
-                The actual rendered columns are set as a property on the row definition" -->
-
-          <!-- Position Column -->
-          <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef> No. </th>
-            <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-          </ng-container>
-
-          <!-- Name Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef> Name </th>
-            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-          </ng-container>
-
-          <!-- Weight Column -->
-          <ng-container matColumnDef="weight">
-            <th mat-header-cell *matHeaderCellDef> Weight </th>
-            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
-          </ng-container>
-
-          <!-- Symbol Column -->
-          <ng-container matColumnDef="symbol">
-            <th mat-header-cell *matHeaderCellDef> Symbol </th>
-            <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-
-        <div class="mt-5"></div>
-        <h2>Inputs</h2>
-        <hr>
-        <div class="example-container">
-          <mat-form-field>
-            <input matInput placeholder="Input">
-          </mat-form-field>
-
-          <mat-form-field>
-            <textarea matInput placeholder="Textarea"></textarea>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-select placeholder="Select">
-              <mat-option value="option">Option</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-radio-group aria-label="Select an option">
-            <mat-radio-button value="1">Option 1</mat-radio-button>
-            <mat-radio-button value="2">Option 2</mat-radio-button>
-          </mat-radio-group>
-
-          <mat-checkbox>Check me!</mat-checkbox>
-
-          <section class="example-section">
-            <mat-slide-toggle class="example-margin" [color]="'accent'" [checked]="false" [disabled]="false">
-              Slide me!
-            </mat-slide-toggle>
-          </section>
-        </div>
-
-        <div class="mt-5"></div>
-        <h2>Progress Bar</h2>
-        <hr>
-        <div class="mb-5">
-          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      </div>
+    </div>
+    <div class="custom-modal" id="exampleModalCenter" *ngIf="isModalSet">
+      <div>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">
+              Resource Upload Form
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              (click)="setModal('close')"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <app-resource-form
+              (cancelModal)="cancelModal($event)"
+              (fileUploaded)="fileUploaded($event)"
+            ></app-resource-form>
+          </div>
         </div>
       </div>
     </div>

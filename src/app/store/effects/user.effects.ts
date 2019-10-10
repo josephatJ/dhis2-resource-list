@@ -1,14 +1,15 @@
-import { Injectable } from '@angular/core';
-import { NgxDhis2HttpClientService, User } from '@iapps/ngx-dhis2-http-client';
-import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
-import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { Injectable } from "@angular/core";
+import { NgxDhis2HttpClientService, User } from "@iapps/ngx-dhis2-http-client";
+import { Actions, createEffect, ofType, OnInitEffects } from "@ngrx/effects";
+import { of } from "rxjs";
+import { catchError, map, switchMap } from "rxjs/operators";
 
 import {
   addCurrentUser,
   loadCurrentUser,
   loadCurrentUserFail
-} from '../actions';
+} from "../actions";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class UserEffects implements OnInitEffects {
@@ -30,6 +31,7 @@ export class UserEffects implements OnInitEffects {
 
   constructor(
     private actions$: Actions,
-    private httpClient: NgxDhis2HttpClientService
+    private httpClient: NgxDhis2HttpClientService,
+    private router: Router
   ) {}
 }

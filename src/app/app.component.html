@@ -1,6 +1,25 @@
 <div class="application-container">
   <ngx-dhis2-menu></ngx-dhis2-menu>
-  <div class="application-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div
+        class="col-12"
+        style="background-color: #276696;margin-top: 48px; position: fixed; height: 50px; z-index: 1200;padding-top: 10px"
+      >
+        <a
+          mat-button
+          routerLinkActive="active-class"
+          [routerLink]="'/procedures'"
+        >
+          Procedures/instructions/process flow
+        </a>
+        <a mat-button routerLinkActive="active-class" [routerLink]="'/forms'">
+          Forms & checklists
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="application-content" style="margin-top: 108px;">
     <router-outlet></router-outlet>
   </div>
 </div>

@@ -1,10 +1,10 @@
 {
-  "name": "ngx-seed-app",
+  "name": "resources-manager",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --aot && cd dist/ngx-seed-app && zip -r -D ngx-seed-app.zip .",
+    "build": "ng build --prod --aot && cd dist/resources-manager && zip -r -D resources-manager.zip .",
     "test": "ng test",
     "test:travis": "ng test -- --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI",
     "lint": "ng lint",
@@ -41,6 +41,8 @@
     "d2": "^31.8.1",
     "dexie": "^2.0.4",
     "hammerjs": "^2.0.8",
+    "jquery": "^3.4.1",
+    "material-design-icons": "^3.0.1",
     "rxjs": "~6.5.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

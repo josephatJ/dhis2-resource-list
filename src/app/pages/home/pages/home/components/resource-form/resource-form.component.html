@@ -1,0 +1,64 @@
+<div>
+  <div class="example-container">
+    <form>
+      <div class="form-group">
+        <input
+          placeholder="Resource Name"
+          class="form-control"
+          name="resourceName"
+          [(ngModel)]="resourceName"
+        />
+        <span style="color: red;font-style: italic" *ngIf="nameisEmpty"
+          >No name specified</span
+        >
+      </div>
+      <div class="form-group" *ngIf="resourceType === 'link'">
+        <input
+          class="form-control"
+          placeholder="Url: eg. https://example.com"
+          name="url"
+          [(ngModel)]="url"
+        />
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          [(ngModel)]="resourceType"
+          type="radio"
+          name="resourceType"
+          id="resourceType1"
+          value="link"
+        />
+        <label class="form-check-label" for="resourceType1">Link</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input
+          class="form-check-input"
+          [(ngModel)]="resourceType"
+          type="radio"
+          name="resourceType"
+          id="resourceType2"
+          value="document"
+        />
+        <label class="form-check-label" for="resourceType2"
+          >Document/File</label
+        >
+        <input
+          type="file"
+          name="data"
+          style="display: none"
+          [(ngModel)]="file"
+          id="fileSelector"
+          (change)="fileSelection($event)"
+        />
+      </div>
+    </form>
+
+    <br />
+    <br />
+    <button class="btn btn-primary" (click)="onNoClick()">Next</button>&nbsp;
+    <button class="btn btn-danger" (click)="cancelTheModal()" id="cancel">
+      Cancel
+    </button>
+  </div>
+</div>
