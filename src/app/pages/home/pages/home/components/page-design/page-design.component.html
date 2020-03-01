@@ -1,0 +1,40 @@
+<div class="row" style="margin-top: 15px;">
+  <div class="col-2">
+    <ul class="list-group">
+      <li
+        class="list-group-item"
+        (click)="getDesign('home-htmlCodes')"
+        routerLinkActive="active-page"
+        routerLink="/page-design/home-htmlCodes"
+      >
+        Home Page
+      </li>
+      <li
+        class="list-group-item"
+        (click)="getDesign('contacts-htmlCodes')"
+        routerLinkActive="active-page"
+        routerLink="/page-design/contacts-htmlCodes"
+      >
+        Contacts Page
+      </li>
+    </ul>
+  </div>
+  <div class="col-10">
+    <!-- <ngx-monaco-editor
+      [options]="editorOptions"
+      [(ngModel)]="code"
+    ></ngx-monaco-editor> -->
+    <!-- <ngx-tinymce-editor
+      [(ngModel)]="html"
+      id="tiny-mce-editor"
+    ></ngx-tinymce-editor> -->
+    <tinymce
+      [(ngModel)]="html"
+      [config]="tinmceConfigs"
+      id="tiny-mce-editor"
+    ></tinymce>
+    <div class="management-btns">
+      <button class="btn" style="float: right" (click)="save()">Save</button>
+    </div>
+  </div>
+</div>

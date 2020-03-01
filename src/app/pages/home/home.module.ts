@@ -10,15 +10,23 @@ import { EffectsModule } from "@ngrx/effects";
 import { effects } from "./store/effects";
 import { reducers } from "./store/reducers";
 import { ResourceFormComponent } from "./pages/home/components/resource-form/resource-form.component";
+import { PageDesignComponent } from "./pages/home/components/page-design/page-design.component";
+import { NgxTinymceModule } from "ngx-tinymce";
 
 @NgModule({
-  declarations: [...pages, DashboardProgressComponent, ResourceFormComponent],
+  declarations: [
+    ...pages,
+    DashboardProgressComponent,
+    ResourceFormComponent,
+    PageDesignComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
     HomeRoutingModule,
+    NgxTinymceModule,
     ...reducers,
     EffectsModule.forFeature(effects)
   ],

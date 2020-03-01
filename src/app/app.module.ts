@@ -1,5 +1,9 @@
 import { HttpClient, HttpClientModule } from "@angular/common/http";
-import { NgModule } from "@angular/core";
+import {
+  NgModule,
+  CUSTOM_ELEMENTS_SCHEMA,
+  NO_ERRORS_SCHEMA
+} from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { ServiceWorkerModule } from "@angular/service-worker";
@@ -23,6 +27,10 @@ import { effects } from "./store/effects";
 import { metaReducers, reducers } from "./store/reducers";
 import { FormsModule } from "@angular/forms";
 import { SharedModule } from "./shared/shared.module";
+import { NgxTinymceEditorModule } from "ngx-tinymce-editor";
+import { NgxTinymceModule } from "ngx-tinymce";
+
+import { MonacoEditorModule } from "ngx-monaco-editor";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -46,6 +54,11 @@ export function HttpLoaderFactory(http: HttpClient) {
       namespace: "iapps",
       models: {}
     }),
+    NgxTinymceEditorModule.forRoot(),
+    NgxTinymceModule.forRoot({
+      baseURL: "./assets/tinymce/"
+    }),
+    MonacoEditorModule.forRoot(),
     /**
      * Menu  module
      */
@@ -74,6 +87,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   providers: [{ provide: RouterStateSerializer, useClass: RouteSerializer }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class AppModule {}

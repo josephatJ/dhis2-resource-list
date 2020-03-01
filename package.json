@@ -43,6 +43,9 @@
     "hammerjs": "^2.0.8",
     "jquery": "^3.4.1",
     "material-design-icons": "^3.0.1",
+    "ngx-monaco-editor": "^8.1.1",
+    "ngx-tinymce": "^7.0.0",
+    "ngx-tinymce-editor": "0.0.3",
     "rxjs": "~6.5.2",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"

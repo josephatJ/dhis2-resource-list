@@ -19,7 +19,7 @@ export class AppComponent {
     this.translate.use("en");
 
     // Set application title
-    this.setTitle("Resource List");
+    this.setTitle("Management Panel");
   }
 
   public setTitle(newTitle: string) {

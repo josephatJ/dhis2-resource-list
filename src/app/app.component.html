@@ -1,11 +1,17 @@
 <div class="application-container">
-  <ngx-dhis2-menu></ngx-dhis2-menu>
   <div class="container-fluid">
     <div class="row">
       <div
         class="col-12"
-        style="background-color: #276696;margin-top: 48px; position: fixed; height: 50px; z-index: 1200;padding-top: 10px"
+        style="background-color: #457b49; position: fixed; height: 50px; z-index: 1200;padding-top: 10px"
       >
+        <a
+          mat-button
+          routerLinkActive="active-class"
+          [routerLink]="'/page-design'"
+        >
+          Pages Design
+        </a>
         <a
           mat-button
           routerLinkActive="active-class"
@@ -19,7 +25,7 @@
       </div>
     </div>
   </div>
-  <div class="application-content" style="margin-top: 108px;">
+  <div class="application-content" style="margin-top: 55px">
     <router-outlet></router-outlet>
   </div>
 </div>

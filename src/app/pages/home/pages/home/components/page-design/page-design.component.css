@@ -1,0 +1,23 @@
+.active-page {
+  color: #ffffff;
+  font-weight: 600;
+  background-color: #457b49;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  outline: none;
+}
+
+.active-page:focus {
+  outline: none;
+}
+
+.list-group-item {
+  cursor: pointer;
+  position: relative;
+  display: block;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: -1px;
+  border-top-right-radius: 40px;
+  border-bottom-right-radius: 40px;
+  border: 1px solid rgba(204, 199, 199, 0.125);
+}
