@@ -41,7 +41,7 @@
     "d2": "^31.8.1",
     "dexie": "^2.0.4",
     "hammerjs": "^2.0.8",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "material-design-icons": "^3.0.1",
     "ngx-monaco-editor": "^8.1.1",
     "ngx-tinymce": "^7.0.0",
